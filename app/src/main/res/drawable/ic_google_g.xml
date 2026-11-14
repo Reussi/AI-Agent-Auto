@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Neutrales „G“-Symbol für „Mit Google anmelden“ -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M21.35,11.1H12v2.98h5.35c-0.5,2.4 -2.6,3.92 -5.35,3.92A6,6 0,1 1,12 6c1.5,0 2.86,0.55 3.9,1.45l2.2,-2.2A9,9 0,1 0,12 21c4.97,0 9,-3.6 9,-9 0,-0.3 -0.02,-0.6 -0.05,-0.9z" />
+</vector>

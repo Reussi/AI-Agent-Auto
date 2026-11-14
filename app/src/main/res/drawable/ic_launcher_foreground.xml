@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- App-Symbol: großes „C“ + Mikrofon (Sprache) + goldenes „G“ + Haus (Smart Home).
+     Eigene, allgemeine Symbole – keine fremden Logos. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+
+    <!-- Großes „C“ am linken Rand – innerhalb der sicheren Zone -->
+    <path
+        android:pathData="M57.4,28.4 A26.5,26.5 0 1,0 57.4,79.6"
+        android:strokeWidth="4.5"
+        android:strokeLineCap="round"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000" />
+
+    <!-- Mikrofon, leicht nach links versetzt -->
+    <group android:scaleX="1.9" android:scaleY="1.9"
+        android:translateX="26" android:translateY="31">
+        <path android:fillColor="#FFFFFF"
+            android:pathData="M12,14a3,3 0,0 0,3 -3V5a3,3 0,0 0,-6 0v6a3,3 0,0 0,3 3zM17,11a5,5 0,0 1,-10 0H5a7,7 0,0 0,6 6.92V21h2v-3.08A7,7 0,0 0,19 11h-2z" />
+    </group>
+
+    <!-- Buchstabe „G“ im Gold-Verlauf, oben rechts – innerhalb der sicheren Zone -->
+    <path
+        android:pathData="M75.6,31.4 A7.6,7.6 0 1,0 77.6,38.6"
+        android:strokeWidth="3.4"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000">
+        <aapt:attr name="android:strokeColor">
+            <gradient android:type="linear"
+                android:startX="62" android:startY="29" android:endX="78" android:endY="45">
+                <item android:offset="0" android:color="#FFFFE7A3" />
+                <item android:offset="1" android:color="#FFFFB547" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:pathData="M77.6,38.6 L71.6,38.6"
+        android:strokeWidth="3.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000">
+        <aapt:attr name="android:strokeColor">
+            <gradient android:type="linear"
+                android:startX="62" android:startY="29" android:endX="78" android:endY="45">
+                <item android:offset="0" android:color="#FFFFE7A3" />
+                <item android:offset="1" android:color="#FFFFB547" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Haus (Smart Home) im Home-Assistant-Blau, unten rechts – innerhalb der sicheren Zone -->
+    <!-- Weißer Rand, damit das Abzeichen sich vom Orange abhebt -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M70,56 a11,11 0,1 0,0.01 0 Z" />
+    <!-- Kreis im Home-Assistant-Blau -->
+    <path android:fillColor="#18BCF2"
+        android:pathData="M70,57.6 a9.4,9.4 0,1 0,0.01 0 Z" />
+    <!-- Haus in Weiß -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M70,60.8 L63.4,66.6 L65.4,66.6 L65.4,72 L68.3,72 L68.3,68.7 L71.7,68.7 L71.7,72 L74.6,72 L74.6,66.6 L76.6,66.6 Z" />
+</vector>

@@ -1,0 +1,57 @@
+IA Agent Auto – Source-Available License (Nur-Ansehen-Lizenz)
+Version 1.0
+
+Copyright (c) 2026 Reussi (github.com/Reussi). Alle Rechte vorbehalten.
+
+DEUTSCH (maßgeblich)
+
+1. Der Quellcode dieses Projekts wird ausschließlich zur Ansicht, zum Lernen und
+   zur Prüfung (z. B. Sicherheits- und Datenschutzprüfung) öffentlich zugänglich gemacht.
+
+2. Erlaubt ist:
+   a) den Quellcode zu lesen und herunterzuladen;
+   b) den Quellcode für den eigenen, privaten, nicht kommerziellen Gebrauch auf eigenen
+      Geräten zu übersetzen und auszuführen;
+   c) über GitHub Fehlerberichte, Vorschläge und Beiträge (Pull Requests) einzureichen.
+
+3. Ohne vorherige schriftliche Zustimmung des Rechteinhabers ist nicht erlaubt:
+   a) den Quellcode oder daraus erstellte Programme ganz oder teilweise zu verbreiten,
+      zu veröffentlichen, zu verkaufen, zu vermieten oder anderweitig Dritten zugänglich
+      zu machen – auch nicht in veränderter Form;
+   b) den Quellcode oder Teile davon in andere Produkte oder Dienste einzubauen;
+   c) das Programm in App-Stores (z. B. Google Play, Apple App Store) oder auf anderen
+      Vertriebswegen anzubieten;
+   d) Namen, Logos und Gestaltung von „IA Agent Auto“ zu verwenden.
+
+4. Beiträge: Wer einen Beitrag (z. B. Pull Request) einreicht, räumt dem Rechteinhaber
+   ein unbefristetes, weltweites, unentgeltliches und nicht ausschließliches Recht ein,
+   den Beitrag in jeder Form zu nutzen, zu ändern, zu verbreiten und – auch kommerziell –
+   zu verwerten, und bestätigt, dazu berechtigt zu sein.
+
+5. Fremde Marken: „Claude“ ist eine Marke von Anthropic, PBC. „Home Assistant“ ist eine
+   Marke der Open Home Foundation. „Android“ ist eine Marke von Google LLC. Dieses Projekt
+   steht in keiner Verbindung zu diesen Unternehmen und wird von ihnen weder unterstützt
+   noch empfohlen. Diese Lizenz gewährt keine Rechte an fremden Marken.
+
+6. Fremdsoftware: Mitgelieferte oder eingebundene Bibliotheken Dritter unterliegen ihren
+   jeweils eigenen Lizenzen.
+
+7. Haftungsausschluss: Die Software wird „wie besehen“ ohne jede Gewährleistung
+   bereitgestellt. Die Haftung ist – soweit gesetzlich zulässig – ausgeschlossen; dies gilt
+   nicht für Vorsatz, grobe Fahrlässigkeit sowie Schäden aus der Verletzung des Lebens,
+   des Körpers oder der Gesundheit. Die Bedienung eines Smartphones während der Fahrt ist
+   nicht gestattet; die Verantwortung für eine sichere Fahrweise liegt allein beim Fahrer.
+
+8. Es gilt deutsches Recht.
+
+ENGLISH (summary for convenience; the German text above prevails)
+
+The source code is published for viewing, learning and review only. You may read it,
+build and run it for your own private, non-commercial use, and submit issues and pull
+requests. Without prior written permission you may NOT redistribute, publish, sell or
+sublicense it (modified or not), incorporate it into other products, publish it in any
+app store, or use the "IA Agent Auto" name, logo or design. By contributing you grant the
+copyright holder a perpetual, worldwide, royalty-free, non-exclusive right to use your
+contribution in any way, including commercially. Third-party trademarks (Claude, Home
+Assistant, Android) belong to their owners; this project is not affiliated with them.
+Provided "as is", without warranty.

@@ -1,0 +1,28 @@
+# Gradle / Android Studio
+.gradle/
+build/
+app/build/
+local.properties
+*.iml
+.idea/
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Signaturschlüssel und Geheimnisse – niemals einchecken
+*.jks
+*.keystore
+keystore.properties
+*.p12
+
+# Erzeugte Dateien (werden als GitHub-Release veröffentlicht)
+*.apk
+*.aab
+*.zip
+
+# Vorschaubilder aus der Entwicklung
+vorschau-*.png
+
+# Kotlin-Compiler-Cache
+.kotlin/

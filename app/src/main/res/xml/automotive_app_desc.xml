@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Claude erscheint in Android Auto als Medien-App: Diese Art lässt Android Auto auch bei
+     selbst installierten Apps zu („Unbekannte Quellen“). Der Template-Bildschirm
+     („IA Agent Auto“) würde eine Installation aus Google Play voraussetzen. -->
+<automotiveApp>
+    <uses name="media" />
+</automotiveApp>

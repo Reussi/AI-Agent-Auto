@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Erkennen, wann sich das Handy mit dem Auto verbindet -->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+    <!-- Spracherkennung und Sprachausgabe des Systems sichtbar machen (Android 11+) -->
+    <queries>
+        <package android:name="com.anthropic.claude" />
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+        <intent>
+            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".ClaudeApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.ClaudeAuto">
+
+        <!-- QR-Scanner (Google Play-Dienste) schon bei der Installation laden -->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode_ui" />
+
+        <!-- Android Auto: Template-App (Bildschirm im Auto) + Messaging-Benachrichtigungen -->
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+        <meta-data
+            android:name="androidx.car.app.minCarApiLevel"
+            android:value="1" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- „Hey Google, spiele … auf IA Agent Auto“ -->
+            <intent-filter>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Widget für den Startbildschirm -->
+        <activity
+            android:name=".widget.VoiceActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:taskAffinity="app.iaagentauto.voice"
+            android:theme="@style/Theme.ClaudeAuto.Voice" />
+
+        <receiver
+            android:name=".widget.ClaudeWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/claude_widget_info" />
+        </receiver>
+
+        <!-- Claude als Medien-App in Android Auto -->
+        <service
+            android:name=".media.ClaudeMediaService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            android:label="IA Agent Auto">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <!-- Eigener Name im Auto, damit man ihn von der Nachrichten-Ansicht unterscheiden kann -->
+        <service
+            android:name=".car.ClaudeCarAppService"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="IA Agent Auto">
+            <intent-filter>
+                <action android:name="androidx.car.app.CarAppService" />
+                <!-- POI wird von Android Auto am breitesten unterstützt; IOT zusätzlich -->
+                <category android:name="androidx.car.app.category.POI" />
+                <category android:name="androidx.car.app.category.IOT" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".messaging.CarConnectReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".messaging.ReplyReceiver"
+            android:exported="false" />
+
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            tools:node="merge"
+            xmlns:tools="http://schemas.android.com/tools" />
+    </application>
+</manifest>

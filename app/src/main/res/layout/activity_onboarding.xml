@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical">
+
+    <!-- Kopf: Zurück + Fortschritt -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="56dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="Zurück"
+            app:icon="@drawable/ic_back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/stepLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/stepProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:max="6"
+                app:trackCornerRadius="4dp"
+                app:trackThickness="6dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="48dp"
+            android:layout_height="1dp" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <FrameLayout
+            android:id="@+id/pages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="12dp">
+
+            <!-- 0: Willkommen -->
+            <LinearLayout
+                android:id="@+id/pageWelcome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_marginTop="24dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/app_logo" />
+
+                <TextView
+                    style="@style/TextAppearance.ClaudeAuto.PageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:text="Willkommen bei IA Agent Auto" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="center"
+                    android:text="Sprich unterwegs mit Claude – freihändig im Auto. Die Einrichtung dauert rund zwei Minuten und ist nur einmal nötig."
+                    android:textAppearance="@style/TextAppearance.ClaudeAuto.BodyLarge" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.ClaudeAuto.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/primary_container">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_key"
+                            app:tint="@color/on_primary_container" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:text="@string/requirement_claude"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="@color/on_primary_container" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <include android:id="@+id/welcome1" layout="@layout/item_feature" />
+                <include android:id="@+id/welcome2" layout="@layout/item_feature" />
+                <include android:id="@+id/welcome3" layout="@layout/item_feature" />
+            </LinearLayout>
+
+            <!-- 1: Anmeldeart wählen -->
+            <LinearLayout
+                android:id="@+id/pageMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.ClaudeAuto.PageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Wie möchtest du dich anmelden?" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="IA Agent Auto verbindet sich über dein Konto bei Anthropic, dem Hersteller von Claude. Tippe auf die Art, die du nutzen möchtest – du bekommst danach eine genaue Anleitung."
+                    android:textAppearance="@style/TextAppearance.ClaudeAuto.BodyLarge" />
+
+                <include android:id="@+id/methodGoogle" layout="@layout/item_option" />
+                <include android:id="@+id/methodEmail" layout="@layout/item_option" />
+                <include android:id="@+id/methodNew" layout="@layout/item_option" />
+                <include android:id="@+id/methodKey" layout="@layout/item_option" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Anthropic bietet die Anmeldung per Google oder E-Mail an. Facebook oder Apple werden dort nicht unterstützt."
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+
+            <!-- 2: Anleitung zur gewählten Anmeldeart -->
+            <LinearLayout
+                android:id="@+id/pageGuide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/guideIcon"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bubble_icon_bg"
+                    android:contentDescription="@null"
+                    android:padding="16dp"
+                    app:tint="@color/on_primary_container" />
+
+                <TextView
+                    android:id="@+id/guideTitle"
+                    style="@style/TextAppearance.ClaudeAuto.PageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="Lies dir die Schritte kurz durch und tippe dann unten auf den Knopf."
+                    android:textAppearance="@style/TextAppearance.ClaudeAuto.BodyLarge" />
+
+                <LinearLayout
+                    android:id="@+id/guideSteps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/openMail"
+                    style="@style/Widget.Material3.Button.TonalButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="E-Mail-App öffnen"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_mail" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.ClaudeAuto.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <TextView
+                        android:id="@+id/guideTip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.ClaudeAuto.Body" />
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- 2: Schlüssel übernehmen -->
+            <LinearLayout
+                android:id="@+id/pageKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.ClaudeAuto.PageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Verbindung herstellen" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Du bist jetzt bei Anthropic angemeldet. Zum Schluss erstellst du dort einen Zugangsschlüssel für die App:"
+                    android:textAppearance="@style/TextAppearance.ClaudeAuto.BodyLarge" />
+
+                <LinearLayout
+                    android:id="@+id/keySteps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <!-- Status der Verbindung -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/keyStatusCard"
+                    style="@style/Widget.ClaudeAuto.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp">
+
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:id="@+id/keyProgress"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:indeterminate="true"
+                                android:visibility="gone"
+                                app:indicatorSize="32dp" />
+
+                            <ImageView
+                                android:id="@+id/keyStatusIcon"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_paste"
+                                app:tint="?attr/colorOnSurfaceVariant" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/keyStatusText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_weight="1"
+                            android:text="Warte auf den kopierten Schlüssel …"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurface" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/reopenConsole"
+                    style="@style/Widget.Material3.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kopierten Schlüssel einfügen"
+                    app:icon="@drawable/ic_paste" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/manualKeyLayout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Schlüssel (sk-ant-…)"
+                    android:visibility="gone"
+                    app:boxCornerRadiusBottomEnd="14dp"
+                    app:boxCornerRadiusBottomStart="14dp"
+                    app:boxCornerRadiusTopEnd="14dp"
+                    app:boxCornerRadiusTopStart="14dp"
+                    app:endIconMode="password_toggle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/manualKey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:imeOptions="actionDone"
+                        android:importantForAutofill="no"
+                        android:inputType="textPassword"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- 3: Modell wählen -->
+            <LinearLayout
+                android:id="@+id/pageModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.ClaudeAuto.PageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Wie soll Claude antworten?" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Tippe auf eine Variante. Du kannst das später jederzeit ändern."
+                    android:textAppearance="@style/TextAppearance.ClaudeAuto.BodyLarge" />
+
+                <include android:id="@+id/optFast" layout="@layout/item_option" />
+                <include android:id="@+id/optBalanced" layout="@layout/item_option" />
+                <include android:id="@+id/optBest" layout="@layout/item_option" />
+            </LinearLayout>
+
+            <!-- 4: Berechtigungen -->
+            <LinearLayout
+                android:id="@+id/pagePermissions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.ClaudeAuto.PageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Zuhören und Bescheid geben" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Tippe auf beide Karten und bestätige jeweils mit „Zulassen“."
+                    android:textAppearance="@style/TextAppearance.ClaudeAuto.BodyLarge" />
+
+                <include android:id="@+id/optMic" layout="@layout/item_option" />
+                <include android:id="@+id/optNotif" layout="@layout/item_option" />
+            </LinearLayout>
+
+            <!-- 5: Fertig -->
+            <LinearLayout
+                android:id="@+id/pageDone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/doneIcon"
+                    android:layout_width="112dp"
+                    android:layout_height="112dp"
+                    android:layout_marginTop="32dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_check_circle"
+                    app:tint="@color/success" />
+
+                <TextView
+                    style="@style/TextAppearance.ClaudeAuto.PageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="Alles bereit!" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="center"
+                    android:text="Claude ist mit deinem Konto verbunden. Diese Einrichtung musst du nicht wiederholen."
+                    android:textAppearance="@style/TextAppearance.ClaudeAuto.BodyLarge" />
+
+                <include android:id="@+id/done1" layout="@layout/item_feature" />
+                <include android:id="@+id/done2" layout="@layout/item_feature" />
+            </LinearLayout>
+        </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Feste Knöpfe unten -->
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/primary"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            app:cornerRadius="30dp"
+            app:iconGravity="textStart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/secondary"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceTitleSmall" />
+    </LinearLayout>
+</LinearLayout>

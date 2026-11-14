@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IA Agent Auto</string>
+    <string name="widget_description">Antippen und Claude per Sprache eine Frage stellen</string>
+    <string name="requirement_claude">Wichtig: IA Agent Auto funktioniert nur mit Claude. Du brauchst ein Anthropic-Konto mit Zugang zur Claude API und einen eigenen API-Schlüssel. Ein claude.ai-Abo (Pro/Max) allein reicht nicht aus. Die API-Nutzung rechnet Anthropic separat nach Verbrauch ab.</string>
+</resources>

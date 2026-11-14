@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="claude_orange">#D97757</color>
+    <color name="primary">#B4532F</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#F8DDD1</color>
+    <color name="on_primary_container">#4A1A08</color>
+    <color name="background">#F5F4EF</color>
+    <color name="surface">#F5F4EF</color>
+    <color name="card">#FFFFFF</color>
+    <color name="on_surface">#1F1E1D</color>
+    <color name="on_surface_variant">#5E5D59</color>
+    <color name="outline">#D6D3CA</color>
+    <color name="bubble_claude">#EDEBE4</color>
+    <color name="success">#2E7D4F</color>
+    <color name="success_container">#D7F0DF</color>
+    <color name="error">#B3261E</color>
+</resources>
