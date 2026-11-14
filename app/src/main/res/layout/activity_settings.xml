@@ -389,140 +389,215 @@
                         android:animateLayoutChanges="true"
                         android:orientation="vertical">
 
-                        <!-- Art der Verbindung: Anmeldung (Adresse + Konto) oder Zugangsschlüssel (QR-Code) -->
-                        <com.google.android.material.button.MaterialButtonToggleGroup
-                            android:id="@+id/haMode"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="14dp"
-                            app:checkedButton="@+id/haModeLogin"
-                            app:selectionRequired="true"
-                            app:singleSelection="true">
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/haModeLogin"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Mit Adresse anmelden" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/haModeToken"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Per QR-Code" />
-                        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-                        <TextView
-                            android:id="@+id/haModeHint"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:textAppearance="@style/TextAppearance.ClaudeAuto.Body" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/haUrlLayout"
-                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="14dp"
-                            android:hint="Adresse (optional)"
-                            app:boxCornerRadiusBottomEnd="14dp"
-                            app:boxCornerRadiusBottomStart="14dp"
-                            app:boxCornerRadiusTopEnd="14dp"
-                            app:boxCornerRadiusTopStart="14dp"
-                            app:helperText="Leer lassen – wird im WLAN automatisch gefunden"
-                            app:startIconDrawable="@drawable/ic_home">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/haUrl"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:importantForAutofill="no"
-                                android:inputType="textUri"
-                                android:maxLines="1" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/haDiscover"
-                            style="@style/Widget.Material3.Button.TextButton.Icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Im WLAN suchen"
-                            app:icon="@drawable/ic_home" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/haLogin"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Bei Home Assistant anmelden"
-                            app:icon="@drawable/ic_open" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/haTokenLayout"
-                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:hint="Zugangsschlüssel (Token)"
-                            app:boxCornerRadiusBottomEnd="14dp"
-                            app:boxCornerRadiusBottomStart="14dp"
-                            app:boxCornerRadiusTopEnd="14dp"
-                            app:boxCornerRadiusTopStart="14dp"
-                            app:endIconMode="password_toggle"
-                            app:startIconDrawable="@drawable/ic_key">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/haToken"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="monospace"
-                                android:importantForAutofill="no"
-                                android:inputType="textPassword"
-                                android:maxLines="1" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/haScan"
-                            style="@style/Widget.Material3.Button.TonalButton.Icon"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="QR-Code scannen"
-                            app:icon="@drawable/ic_qr" />
-
+                        <!-- Kompakte Anzeige, wenn verbunden -->
                         <LinearLayout
-                            android:id="@+id/haTokenTools"
+                            android:id="@+id/haSummary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_marginTop="14dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/haSummaryText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/haEdit"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_weight="1"
+                                    android:text="Ändern" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/haDisconnectSummary"
+                                    style="@style/Widget.Material3.Button.TextButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Trennen" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Einrichtung: nur sichtbar, solange nicht verbunden (oder bei „Ändern“) -->
+                        <LinearLayout
+                            android:id="@+id/haSetup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:animateLayoutChanges="true"
+                            android:orientation="vertical">
+
+                            <!-- Art der Verbindung: Anmeldung (Adresse + Konto) oder Zugangsschlüssel (QR-Code) -->
+                            <com.google.android.material.button.MaterialButtonToggleGroup
+                                android:id="@+id/haMode"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="14dp"
+                                app:checkedButton="@+id/haModeLogin"
+                                app:selectionRequired="true"
+                                app:singleSelection="true">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/haModeLogin"
+                                    style="?attr/materialButtonOutlinedStyle"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Mit Adresse anmelden" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/haModeToken"
+                                    style="?attr/materialButtonOutlinedStyle"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Per QR-Code" />
+                            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                            <TextView
+                                android:id="@+id/haModeHint"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:textAppearance="@style/TextAppearance.ClaudeAuto.Body" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/haUrlLayout"
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="14dp"
+                                android:hint="Adresse (optional)"
+                                app:boxCornerRadiusBottomEnd="14dp"
+                                app:boxCornerRadiusBottomStart="14dp"
+                                app:boxCornerRadiusTopEnd="14dp"
+                                app:boxCornerRadiusTopStart="14dp"
+                                app:helperText="Leer lassen – wird im WLAN automatisch gefunden"
+                                app:startIconDrawable="@drawable/ic_home">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/haUrl"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:importantForAutofill="no"
+                                    android:inputType="textUri"
+                                    android:maxLines="1" />
+                            </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/haPaste"
+                                android:id="@+id/haDiscover"
                                 style="@style/Widget.Material3.Button.TextButton.Icon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Einfügen"
-                                app:icon="@drawable/ic_paste" />
+                                android:text="Im WLAN suchen"
+                                app:icon="@drawable/ic_home" />
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/haHelp"
-                                style="@style/Widget.Material3.Button.TextButton"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/haLogin"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Wo finde ich den Schlüssel?" />
-                        </LinearLayout>
+                                android:layout_marginTop="4dp"
+                                android:text="Bei Home Assistant anmelden"
+                                app:icon="@drawable/ic_open" />
 
-                        <LinearLayout
-                            android:id="@+id/haHelpSteps"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/haTokenLayout"
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:hint="Zugangsschlüssel (Token)"
+                                app:boxCornerRadiusBottomEnd="14dp"
+                                app:boxCornerRadiusBottomStart="14dp"
+                                app:boxCornerRadiusTopEnd="14dp"
+                                app:boxCornerRadiusTopStart="14dp"
+                                app:endIconMode="password_toggle"
+                                app:startIconDrawable="@drawable/ic_key">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/haToken"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="monospace"
+                                    android:importantForAutofill="no"
+                                    android:inputType="textPassword"
+                                    android:maxLines="1" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/haScan"
+                                style="@style/Widget.Material3.Button.TonalButton.Icon"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="QR-Code scannen"
+                                app:icon="@drawable/ic_qr" />
+
+                            <LinearLayout
+                                android:id="@+id/haTokenTools"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/haPaste"
+                                    style="@style/Widget.Material3.Button.TextButton.Icon"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Einfügen"
+                                    app:icon="@drawable/ic_paste" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/haHelp"
+                                    style="@style/Widget.Material3.Button.TextButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Wo finde ich den Schlüssel?" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/haHelpSteps"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone" />
+
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/haDisconnect"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_weight="1"
+                                    android:text="Trennen" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/haConnect"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Verbinden" />
+                            </LinearLayout>
+                        </LinearLayout>
 
                         <com.google.android.material.progressindicator.LinearProgressIndicator
                             android:id="@+id/haProgress"
@@ -532,7 +607,6 @@
                             android:indeterminate="true"
                             android:visibility="gone"
                             app:trackCornerRadius="4dp" />
-
                         <TextView
                             android:id="@+id/haStatus"
                             android:layout_width="match_parent"
@@ -540,29 +614,6 @@
                             android:layout_marginTop="6dp"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:visibility="gone" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/haDisconnect"
-                                style="@style/Widget.Material3.Button.OutlinedButton"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_weight="1"
-                                android:text="Trennen" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/haConnect"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Verbinden" />
-                        </LinearLayout>
 
                         <TextView
                             android:layout_width="match_parent"

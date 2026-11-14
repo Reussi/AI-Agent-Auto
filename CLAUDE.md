@@ -21,7 +21,7 @@ Kommunikation mit dem Projektinhaber (GitHub: Reussi) auf **Deutsch**.
   angedacht (eigene Swift-App, CarPlay-Kategorie „Voice-based conversational apps“ ab iOS 26.4, Apple-Freigabe nötig).
 
 ## Produkt
-- Name: **IA Agent Auto**, Paket/applicationId `app.iaagentauto`, Version **0.1.3** (Entwicklungsversion).
+- Name: **IA Agent Auto**, Paket/applicationId `app.iaagentauto`, Version **0.1.4** (Entwicklungsversion).
   versionCode muss bei jedem Build steigen.
 - **Claude ist Voraussetzung**: eigenes Anthropic-Konto mit API-Zugang + API-Schlüssel (claude.ai-Abo reicht nicht).
   Dieser Hinweis steht im Store-Text, in der README, auf der Willkommensseite und in den Einstellungen.
@@ -37,6 +37,7 @@ Kommunikation mit dem Projektinhaber (GitHub: Reussi) auf **Deutsch**.
   mit `<link rel="redirect_uri" href="iaagentauto://ha-auth">` – Datei nicht verschieben/umbenennen.
   (Noch nicht mit echtem Home Assistant getestet; Alternative: GitHub Pages.)
 - Gespeichert werden Internet-Adresse (unterwegs) und Heimadresse (Ersatz).
+- Nach erfolgreicher Verbindung Einrichtung ausblenden (nur kompakte Anzeige); bei Verbindungsverlust automatisch wieder einblenden.
 
 ## Android Auto – wichtige Erkenntnis
 - Android Auto (ab 17.7, getestet mit 18.1 auf Samsung A55/Android 16) zeigt **Template-Apps (Car App Library)

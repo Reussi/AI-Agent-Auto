@@ -167,6 +167,10 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var haUrl: TextInputEditText
     private lateinit var haToken: TextInputEditText
     private lateinit var haStatus: TextView
+    /** Einrichtung trotz bestehender Verbindung aufgeklappt („Ändern“). */
+    private var haExpanded = false
+    /** Ergebnis der letzten Verbindungsprüfung (null = läuft/unbekannt). */
+    private var haConnectionOk: Boolean? = null
 
     private fun setupHomeAssistant() {
         haUrl = findViewById(R.id.haUrl)
@@ -212,10 +216,18 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.haHelp).setOnClickListener { steps.isVisible = !steps.isVisible }
 
         findViewById<MaterialButton>(R.id.haConnect).setOnClickListener { connectHomeAssistant() }
-        findViewById<MaterialButton>(R.id.haDisconnect).setOnClickListener {
+        val disconnect = View.OnClickListener {
             Settings.setHa(this, "", "")
             Settings.setHaMode(this, Settings.HA_MODE_LOGIN)
             haToken.setText("")
+            haStatus.isVisible = false
+            haExpanded = false
+            renderHa()
+        }
+        findViewById<MaterialButton>(R.id.haDisconnect).setOnClickListener(disconnect)
+        findViewById<MaterialButton>(R.id.haDisconnectSummary).setOnClickListener(disconnect)
+        findViewById<MaterialButton>(R.id.haEdit).setOnClickListener {
+            haExpanded = true
             haStatus.isVisible = false
             renderHa()
         }
@@ -293,6 +305,25 @@ class SettingsActivity : AppCompatActivity() {
         super.onResume()
         refreshPermissions()
         Billing.refresh()
+        checkHaConnection()
+    }
+
+    /** Ist die gespeicherte Verbindung noch in Ordnung? Sonst Einrichtung wieder einblenden. */
+    private fun checkHaConnection() {
+        if (!HomeAssistant.isConfigured(this) || !Billing.isUnlocked(this)) return
+        haConnectionOk = null
+        renderHa()
+        lifecycleScope.launch {
+            val error = withContext(Dispatchers.IO) { HomeAssistant.ping(applicationContext) }
+            haConnectionOk = error == null
+            if (error != null) {
+                haExpanded = true
+                haStatus.isVisible = true
+                haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.error))
+                haStatus.text = "Verbindung zu Home Assistant verloren: $error\nBitte neu anmelden oder die Adresse prüfen."
+            }
+            renderHa()
+        }
     }
 
     // ---------------------------------------------------------------- Anmeldung mit Adresse
@@ -410,6 +441,8 @@ class SettingsActivity : AppCompatActivity() {
                 haStatus.text = "Verbindung fehlgeschlagen: $error"
             } else {
                 haUrl.setText(primary)
+                haExpanded = false
+                haConnectionOk = true
                 haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.success))
                 haStatus.text = buildString {
                     append("✓ Angemeldet und verbunden.\n")
@@ -470,6 +503,25 @@ class SettingsActivity : AppCompatActivity() {
             }, unlocked && configured)
         findViewById<View>(R.id.haDisconnect).isVisible = configured
         findViewById<MaterialButton>(R.id.haConnect).text = if (configured) "Erneut prüfen & speichern" else "Verbinden"
+
+        // Verbunden und in Ordnung → nur kompakte Anzeige; sonst Einrichtung zeigen
+        val collapsed = unlocked && configured && !haExpanded && haConnectionOk != false
+        findViewById<View>(R.id.haSummary).isVisible = collapsed
+        findViewById<View>(R.id.haSetup).isVisible = !collapsed
+        if (configured && haConnectionOk == false) {
+            setChip(findViewById(R.id.haChip), "Getrennt", false)
+        }
+        if (collapsed) {
+            val primary = Settings.haUrl(this)
+            val local = Settings.haLocalUrl(this)
+            val via = if (Settings.haMode(this) == Settings.HA_MODE_LOGIN) "Home-Assistant-Konto" else "Zugangsschlüssel"
+            findViewById<TextView>(R.id.haSummaryText).text = buildString {
+                append(if (haConnectionOk == null) "… Verbindung wird geprüft\n" else "✓ Verbunden\n")
+                append("Unterwegs über: $primary\n")
+                if (local.isNotEmpty()) append("Zu Hause über: $local\n")
+                append("Angemeldet per $via")
+            }
+        }
     }
 
     private fun connectHomeAssistant() {
@@ -535,6 +587,8 @@ class SettingsActivity : AppCompatActivity() {
             val local = listOfNotNull(if (isLocal) ok else null, internal).firstOrNull { it != primary }.orEmpty()
 
             Settings.setHa(this@SettingsActivity, primary, token, local)
+            haExpanded = false
+            haConnectionOk = true
             haUrl.setText(primary)
             haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.success))
             val primaryIsLocal = primary == ok && isLocal

@@ -2,6 +2,10 @@
 
 Alle wichtigen Änderungen an IA Agent Auto. Die App ist noch in Entwicklung (Version 0.x).
 
+## 0.1.4
+- Einstellungen → Home Assistant: Nach erfolgreicher Verbindung werden die Einrichtungsfelder ausgeblendet; es bleibt eine kompakte Anzeige (Adressen, Anmeldeart) mit „Ändern“ und „Trennen“
+- Beim Öffnen der Einstellungen wird die Verbindung geprüft; ist sie verloren, wird die Einrichtung automatisch wieder eingeblendet
+
 ## 0.1.3
 - Home Assistant: zwei Wege zur Verbindung – **mit Adresse anmelden** (Home-Assistant-Benutzername und Passwort, kein Zugangsschlüssel nötig) **oder per QR-Code** (Zugangsschlüssel)
 - „Im WLAN suchen“ trägt die Adresse automatisch ein

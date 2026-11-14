@@ -69,6 +69,14 @@ object HomeAssistant {
         }
     }
 
+    /** Prüft die gespeicherte Verbindung. Gibt null bei Erfolg zurück, sonst eine Fehlermeldung. */
+    fun ping(c: Context): String? = try {
+        val r = call(c, "GET", "/api/")
+        if (r.contains("API running", ignoreCase = true)) null else "Unerwartete Antwort von Home Assistant."
+    } catch (e: Exception) {
+        describe(e)
+    }
+
     /** Liest die in Home Assistant hinterlegten Adressen (intern/extern) aus. */
     fun fetchUrls(url: String, token: String): Pair<String?, String?> = try {
         val o = JSONObject(request(url, token, "GET", "/api/config"))
