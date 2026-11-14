@@ -9,6 +9,10 @@ Kommunikation mit dem Projektinhaber (GitHub: Reussi) auf **Deutsch**.
   sowohl in GitHub (README, store-beschreibung.md, diese Datei) als auch in die App selbst** ein
   (Texte in `app/src/main/res/values/strings.xml`, Hilfe, Einstellungen „Über die App“, Willkommensseite).
 
+- **Bei jeder neuen Version** (versionName in `app/build.gradle.kts`) immer mit anpassen:
+  README.md (Hinweis oben + „Status“ im englischen Teil), CHANGELOG.md (neuer Eintrag oben) und die
+  Versionsangabe in dieser Datei. Vor dem Commit prüfen: `grep -rn "<alte Version>" --include=*.md .`
+
 ## Ziel und Motivation
 - Der Inhaber nutzt Claude bereits, um sein Smart Home (Home Assistant) zu steuern.
   **Unterwegs im Auto war das nicht möglich** – diese App schließt die Lücke:
@@ -17,7 +21,7 @@ Kommunikation mit dem Projektinhaber (GitHub: Reussi) auf **Deutsch**.
   angedacht (eigene Swift-App, CarPlay-Kategorie „Voice-based conversational apps“ ab iOS 26.4, Apple-Freigabe nötig).
 
 ## Produkt
-- Name: **IA Agent Auto**, Paket/applicationId `app.iaagentauto`, Version **0.1.0** (Entwicklungsversion).
+- Name: **IA Agent Auto**, Paket/applicationId `app.iaagentauto`, Version **0.1.1** (Entwicklungsversion).
   versionCode muss bei jedem Build steigen.
 - **Claude ist Voraussetzung**: eigenes Anthropic-Konto mit API-Zugang + API-Schlüssel (claude.ai-Abo reicht nicht).
   Dieser Hinweis steht im Store-Text, in der README, auf der Willkommensseite und in den Einstellungen.
