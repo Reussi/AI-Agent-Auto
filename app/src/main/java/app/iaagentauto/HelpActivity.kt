@@ -76,7 +76,8 @@ class HelpActivity : AppCompatActivity() {
             insets
         }
 
-        sections.forEachIndexed { i, section -> content.addView(sectionView(section, first = i == 0)) }
+        content.addView(storyView())
+        sections.forEach { section -> content.addView(sectionView(section, first = false)) }
 
         // Am Ende: direkt zu den Einstellungen
         content.addView((layoutInflater.inflate(R.layout.item_tonal_button, content, false) as MaterialButton).apply {
@@ -86,6 +87,38 @@ class HelpActivity : AppCompatActivity() {
         }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             topMargin = dp(8)
         })
+    }
+
+    /** Erste Karte: warum es die App gibt. */
+    private fun storyView(): View {
+        val card = MaterialCardView(this, null, com.google.android.material.R.attr.materialCardViewFilledStyle).apply {
+            setCardBackgroundColor(getColor(R.color.primary_container))
+            radius = dp(20).toFloat()
+            setContentPadding(dp(18), dp(16), dp(18), dp(16))
+        }
+        val col = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        val head = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = android.view.Gravity.CENTER_VERTICAL }
+        head.addView(ImageView(this).apply { setImageResource(R.drawable.app_logo) }, LinearLayout.LayoutParams(dp(40), dp(40)))
+        head.addView(TextView(this).apply {
+            text = getString(R.string.app_story_title)
+            setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_TitleMedium)
+            setTypeface(typeface, android.graphics.Typeface.BOLD)
+            setTextColor(getColor(R.color.on_primary_container))
+            setPadding(dp(12), 0, 0, 0)
+        })
+        col.addView(head)
+        col.addView(TextView(this).apply {
+            text = getString(R.string.app_story)
+            setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium)
+            setTextColor(getColor(R.color.on_primary_container))
+            setPadding(0, dp(10), 0, 0)
+        })
+        card.addView(col)
+        return card.also {
+            it.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                topMargin = dp(4); bottomMargin = dp(4)
+            }
+        }
     }
 
     private fun sectionView(section: Section, first: Boolean): View {

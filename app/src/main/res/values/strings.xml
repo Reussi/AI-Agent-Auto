@@ -3,4 +3,7 @@
     <string name="app_name">IA Agent Auto</string>
     <string name="widget_description">Antippen und Claude per Sprache eine Frage stellen</string>
     <string name="requirement_claude">Wichtig: IA Agent Auto funktioniert nur mit Claude. Du brauchst ein Anthropic-Konto mit Zugang zur Claude API und einen eigenen API-Schlüssel. Ein claude.ai-Abo (Pro/Max) allein reicht nicht aus. Die API-Nutzung rechnet Anthropic separat nach Verbrauch ab.</string>
+    <string name="app_story_title">Warum es diese App gibt</string>
+    <string name="app_story">Zu Hause lässt sich das Smart Home längst mit Claude steuern: Licht, Heizung, Rollos – einfach im Gespräch. Nur unterwegs im Auto ging das nicht. Genau dafür ist IA Agent Auto entstanden: Claude hört auch während der Fahrt zu, beantwortet Fragen und steuert – wenn du möchtest – dein Zuhause über Home Assistant. Heizung vorwärmen, bevor du ankommst, nachsehen, ob das Garagentor zu ist, oder das Licht einschalten: per Sprache, ohne das Handy anzufassen.</string>
+    <string name="app_story_short">Steuere dein Zuhause mit Claude – jetzt auch unterwegs im Auto. Fragen stellen, Antworten hören, optional Home Assistant schalten. Die Einrichtung dauert rund zwei Minuten und ist nur einmal nötig.</string>
 </resources>

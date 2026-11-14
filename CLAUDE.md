@@ -4,6 +4,11 @@ Diese Datei hält Ziel, Entscheidungen und Rahmenbedingungen des Projekts fest.
 Bitte bei jeder Änderung beachten und bei neuen Entscheidungen aktualisieren.
 Kommunikation mit dem Projektinhaber (GitHub: Reussi) auf **Deutsch**.
 
+## Grundregel
+- Informationen, die der Inhaber zum Projekt gibt (Ziele, Beschreibungen, Hinweise), fließen **immer
+  sowohl in GitHub (README, store-beschreibung.md, diese Datei) als auch in die App selbst** ein
+  (Texte in `app/src/main/res/values/strings.xml`, Hilfe, Einstellungen „Über die App“, Willkommensseite).
+
 ## Ziel und Motivation
 - Der Inhaber nutzt Claude bereits, um sein Smart Home (Home Assistant) zu steuern.
   **Unterwegs im Auto war das nicht möglich** – diese App schließt die Lücke:
