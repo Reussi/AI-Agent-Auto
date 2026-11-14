@@ -4,7 +4,7 @@
 IA Agent Auto
 
 ## Kurzbeschreibung (max. 80 Zeichen)
-Dein KI-Sprachassistent fürs Auto – läuft mit Claude und Home Assistant.
+Dein KI-Sprachassistent fürs Auto mit Claude – optional mit Home Assistant.
 
 ## In-App-Produkt (Play Console → Monetarisieren → In-App-Produkte)
 - Produkt-ID: `home_assistant_addon`
@@ -23,7 +23,7 @@ IA Agent Auto ist dein persönlicher KI-Sprachassistent für unterwegs. Du stell
 **Läuft mit Claude**
 Die Antworten kommen von Claude, dem KI-Modell von Anthropic. Claude erklärt, recherchiert, rechnet, übersetzt und denkt mit. Die Antworten sind kurz und gut verständlich, so wie man es beim Fahren braucht.
 
-**Läuft mit Home Assistant** *(Zusatzfunktion, einmalig 3,00 €, kein Abo)*
+**Optional: Home Assistant** *(Zusatzfunktion, einmalig 3,00 €, kein Abo)*
 Verbinde dein Home Assistant und steuere dein Zuhause von unterwegs:
 • „Mach das Licht in der Garage an.“
 • „Stell die Heizung im Wohnzimmer auf 21 Grad.“

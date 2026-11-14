@@ -1,7 +1,7 @@
 # IA Agent Auto (Android)
 
-**Dein KI-Sprachassistent fürs Auto – läuft mit Claude und Home Assistant.**
-*Your AI voice assistant for the car – works with Claude and Home Assistant.* ([English below](#english))
+**Dein KI-Sprachassistent fürs Auto mit Claude – optional mit Home Assistant.**
+*Your AI voice assistant for the car, powered by your Claude API key – with optional Home Assistant add-on.* ([English below](#english))
 
 > ⚠️ **Entwicklungsversion 0.1.0** – noch nicht im Play Store, Funktionen können sich ändern.
 
