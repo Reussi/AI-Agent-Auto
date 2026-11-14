@@ -57,6 +57,25 @@ object HomeAssistant {
 
     private class HaException(message: String) : Exception(message)
 
+    /** Anfrage an die gespeicherte Adresse; ist sie nicht erreichbar, wird die Heimadresse versucht. */
+    private fun call(c: Context, method: String, path: String, body: String? = null): String {
+        val primary = Settings.haUrl(c)
+        val local = Settings.haLocalUrl(c)
+        return try {
+            request(primary, Settings.haToken(c), method, path, body)
+        } catch (e: java.io.IOException) {
+            if (local.isEmpty() || local == primary) throw e
+            request(local, Settings.haToken(c), method, path, body)
+        }
+    }
+
+    /** Liest die in Home Assistant hinterlegten Adressen (intern/extern) aus. */
+    fun fetchUrls(url: String, token: String): Pair<String?, String?> = try {
+        val o = JSONObject(request(url, token, "GET", "/api/config"))
+        fun clean(k: String) = o.optString(k, "").takeIf { it.startsWith("http") }?.let { normalizeUrl(it) }
+        clean("external_url") to clean("internal_url")
+    } catch (_: Exception) { null to null }
+
     private fun request(url: String, token: String, method: String, path: String, body: String? = null): String {
         val conn = URL(url + path).openConnection() as HttpURLConnection
         try {
@@ -118,7 +137,7 @@ object HomeAssistant {
     fun findEntities(c: Context, query: String?): Pair<String, Boolean> = try {
         val allowed = allowedDomains(c)
         val readable = allowed + READ_ONLY
-        val arr = JSONArray(request(Settings.haUrl(c), Settings.haToken(c), "GET", "/api/states"))
+        val arr = JSONArray(call(c, "GET", "/api/states"))
         val q = query?.trim()?.lowercase().orEmpty()
         val words = q.split(Regex("\\s+")).filter { it.length > 1 }
         val matches = (0 until arr.length()).map { arr.getJSONObject(it) }.filter { o ->
@@ -146,7 +165,7 @@ object HomeAssistant {
         if (d !in allowedDomains(c) + READ_ONLY) {
             "Der Bereich „$d“ ist in den Einstellungen der App nicht freigegeben." to true
         } else {
-            val o = JSONObject(request(Settings.haUrl(c), Settings.haToken(c), "GET", "/api/states/$entityId"))
+            val o = JSONObject(call(c, "GET", "/api/states/$entityId"))
             val attrs = o.optJSONObject("attributes")?.toString()?.take(1500) ?: "{}"
             "${line(o)}\nAttribute: $attrs" to false
         }
@@ -168,11 +187,11 @@ object HomeAssistant {
         return try {
             val body = JSONObject(data?.mapKeys { it.key.toString() } ?: emptyMap<String, Any?>())
             body.put("entity_id", entityId)
-            request(Settings.haUrl(c), Settings.haToken(c), "POST", "/api/services/$domain/$service", body.toString())
+            call(c, "POST", "/api/services/$domain/$service", body.toString())
             // Neuen Zustand zur Bestätigung mitliefern.
             val after = try {
                 Thread.sleep(600)
-                line(JSONObject(request(Settings.haUrl(c), Settings.haToken(c), "GET", "/api/states/$entityId")))
+                line(JSONObject(call(c, "GET", "/api/states/$entityId")))
             } catch (_: Exception) { "" }
             "Ausgeführt: $domain.$service für $entityId. Neuer Zustand: $after" to false
         } catch (e: Exception) {

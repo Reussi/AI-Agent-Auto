@@ -395,12 +395,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
-                            android:hint="Adresse von Home Assistant"
+                            android:hint="Adresse (optional)"
                             app:boxCornerRadiusBottomEnd="14dp"
                             app:boxCornerRadiusBottomStart="14dp"
                             app:boxCornerRadiusTopEnd="14dp"
                             app:boxCornerRadiusTopStart="14dp"
-                            app:helperText="z. B. https://abc123.ui.nabu.casa oder http://192.168.1.10:8123"
+                            app:helperText="Leer lassen – wird im WLAN automatisch gefunden"
                             app:startIconDrawable="@drawable/ic_home">
 
                             <com.google.android.material.textfield.TextInputEditText

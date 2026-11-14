@@ -3,7 +3,7 @@
 **Dein KI-Sprachassistent fürs Auto mit Claude – optional mit Home Assistant.**
 *Your AI voice assistant for the car, powered by your Claude API key – with optional Home Assistant add-on.* ([English below](#english))
 
-> ⚠️ **Entwicklungsversion 0.1.1** – noch nicht im Play Store, Funktionen können sich ändern. Änderungen: [CHANGELOG.md](CHANGELOG.md)
+> ⚠️ **Entwicklungsversion 0.1.2** – noch nicht im Play Store, Funktionen können sich ändern. Änderungen: [CHANGELOG.md](CHANGELOG.md)
 
 > **Wichtig:** IA Agent Auto funktioniert nur mit Claude. Du brauchst ein Anthropic-Konto mit
 > Zugang zur Claude API und einen eigenen API-Schlüssel ([console.anthropic.com](https://console.anthropic.com)).
@@ -72,7 +72,7 @@ your car speakers. It works with **Claude** (requires your own Anthropic API key
 Pro/Max subscription alone is not enough) and optionally controls your **Home Assistant**.
 
 - Build: `./gradlew assembleDebug` (JDK 17, Android SDK 35)
-- Status: development version 0.1.1 (see [CHANGELOG.md](CHANGELOG.md))
+- Status: development version 0.1.2 (see [CHANGELOG.md](CHANGELOG.md))
 - License: **source-available, not open source** – view and private use only, see [LICENSE](LICENSE)
 - Contributions welcome via issues and pull requests, see [CONTRIBUTING.md](CONTRIBUTING.md)
 

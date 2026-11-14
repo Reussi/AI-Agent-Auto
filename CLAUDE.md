@@ -21,7 +21,7 @@ Kommunikation mit dem Projektinhaber (GitHub: Reussi) auf **Deutsch**.
   angedacht (eigene Swift-App, CarPlay-Kategorie „Voice-based conversational apps“ ab iOS 26.4, Apple-Freigabe nötig).
 
 ## Produkt
-- Name: **IA Agent Auto**, Paket/applicationId `app.iaagentauto`, Version **0.1.1** (Entwicklungsversion).
+- Name: **IA Agent Auto**, Paket/applicationId `app.iaagentauto`, Version **0.1.2** (Entwicklungsversion).
   versionCode muss bei jedem Build steigen.
 - **Claude ist Voraussetzung**: eigenes Anthropic-Konto mit API-Zugang + API-Schlüssel (claude.ai-Abo reicht nicht).
   Dieser Hinweis steht im Store-Text, in der README, auf der Willkommensseite und in den Einstellungen.

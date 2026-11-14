@@ -190,8 +190,9 @@ class SettingsActivity : AppCompatActivity() {
             "QR-Code scannen oder kopieren" to "Home Assistant zeigt den neuen Token nur einmal an – meist auch als QR-Code. " +
                 "Tippe hier auf „QR-Code scannen“ und richte die Kamera auf den Bildschirm am PC. " +
                 "Ohne QR-Code: Token kopieren, hierher wechseln und auf „Einfügen“ tippen.",
-            "Adresse eintragen" to "Mit Home Assistant Cloud: die Adresse „…ui.nabu.casa“ (Einstellungen → Home Assistant Cloud). " +
-                "Nur zu Hause erreichbar: die lokale Adresse, z. B. http://192.168.1.10:8123 – dann klappt es unterwegs nicht.",
+            "Adresse (optional)" to "Leer lassen: Die App findet Home Assistant im WLAN automatisch und übernimmt die " +
+                "Internet-Adresse aus Home Assistant für unterwegs. Dafür bei der Einrichtung im Heim-WLAN sein. " +
+                "Alternativ selbst eintragen, z. B. https://…ui.nabu.casa (Home Assistant Cloud).",
         ).forEachIndexed { i, (title, text) ->
             val row = layoutInflater.inflate(R.layout.item_numbered, steps, false)
             row.findViewById<TextView>(R.id.num).text = (i + 1).toString()
@@ -306,8 +307,8 @@ class SettingsActivity : AppCompatActivity() {
             token != null -> {
                 haToken.setText(token)
                 Snackbar.make(root, "Zugangsschlüssel übernommen ✓", Snackbar.LENGTH_SHORT).show()
-                // Adresse schon eingetragen? Dann gleich verbinden.
-                if (!haUrl.text.isNullOrBlank()) connectHomeAssistant()
+                // Gleich verbinden – die Adresse wird bei Bedarf automatisch im WLAN gesucht.
+                connectHomeAssistant()
             }
             url != null -> {
                 haUrl.setText(HomeAssistant.normalizeUrl(url))
@@ -331,32 +332,84 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun connectHomeAssistant() {
-        val urlLayout = findViewById<TextInputLayout>(R.id.haUrlLayout)
         val tokenLayout = findViewById<TextInputLayout>(R.id.haTokenLayout)
-        val url = HomeAssistant.normalizeUrl(haUrl.text?.toString().orEmpty())
+        val typedUrl = HomeAssistant.normalizeUrl(haUrl.text?.toString().orEmpty())
         val token = haToken.text?.toString()?.trim().orEmpty()
-        urlLayout.error = if (url.isEmpty()) "Bitte die Adresse eintragen." else null
-        tokenLayout.error = if (token.isEmpty()) "Bitte den Zugangsschlüssel eintragen." else null
-        if (url.isEmpty() || token.isEmpty()) return
+        tokenLayout.error = if (token.isEmpty()) "Bitte QR-Code scannen oder den Zugangsschlüssel einfügen." else null
+        if (token.isEmpty()) return
 
-        haUrl.setText(url)
         val progress = findViewById<LinearProgressIndicator>(R.id.haProgress)
         val button = findViewById<MaterialButton>(R.id.haConnect)
         progress.isVisible = true
         button.isEnabled = false
-        haStatus.isVisible = false
+        haStatus.isVisible = true
+        haStatus.setTextColor(ContextCompat.getColor(this, R.color.on_surface_variant))
+        haStatus.text = if (typedUrl.isEmpty()) "Suche Home Assistant in deinem WLAN …" else "Verbinde …"
+
         lifecycleScope.launch {
-            val error = withContext(Dispatchers.IO) { HomeAssistant.test(url, token) }
+            // 1) Kandidaten sammeln: eingetragene Adresse, sonst automatisch im WLAN suchen
+            val candidates = mutableListOf<String>()
+            var announcedExternal: String? = null
+            if (typedUrl.isNotEmpty()) candidates.add(typedUrl)
+            if (typedUrl.isEmpty()) {
+                val found = HaDiscovery.discover(this@SettingsActivity)
+                found.forEach { candidates.addAll(it.localUrls) }
+                announcedExternal = found.firstNotNullOfOrNull { it.externalUrl }
+                if (announcedExternal != null) candidates.add(0, announcedExternal)
+            }
+
+            // 2) Erste funktionierende Adresse finden
+            var working: String? = null
+            var lastError: String? = null
+            withContext(Dispatchers.IO) {
+                for (u in candidates.distinct()) {
+                    val err = HomeAssistant.test(u, token)
+                    if (err == null) { working = u; break } else lastError = err
+                }
+            }
+
             progress.isVisible = false
             button.isEnabled = true
-            haStatus.isVisible = true
-            if (error == null) {
-                Settings.setHa(this@SettingsActivity, url, token)
-                haStatus.text = "✓ Verbunden. Frag Claude im Auto z. B.: „Mach das Licht im Wohnzimmer an.“"
-                haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.success))
-            } else {
-                haStatus.text = "Verbindung fehlgeschlagen: $error"
+            val ok = working
+            if (ok == null) {
                 haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.error))
+                haStatus.text = when {
+                    candidates.isEmpty() ->
+                        "Home Assistant wurde im WLAN nicht gefunden. Bist du im selben WLAN? " +
+                            "Alternativ die Adresse oben eintragen (z. B. https://…ui.nabu.casa)."
+                    else -> "Verbindung fehlgeschlagen: $lastError"
+                }
+                renderHa()
+                return@launch
+            }
+
+            // 3) Adressen aus Home Assistant lesen: extern für unterwegs, intern als Ersatz zu Hause
+            val (external, internal) = withContext(Dispatchers.IO) { HomeAssistant.fetchUrls(ok, token) }
+            val ext = external ?: announcedExternal
+            val isLocal = Regex("^https?://(\\[|10\\.|192\\.168\\.|172\\.(1[6-9]|2\\d|3[01])\\.|[^/]*\\.local)").containsMatchIn(ok)
+            val primary = when {
+                ext != null && ext != ok && withContext(Dispatchers.IO) { HomeAssistant.test(ext, token) } == null -> ext
+                else -> ok
+            }
+            val local = listOfNotNull(if (isLocal) ok else null, internal).firstOrNull { it != primary }.orEmpty()
+
+            Settings.setHa(this@SettingsActivity, primary, token, local)
+            haUrl.setText(primary)
+            haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.success))
+            val primaryIsLocal = primary == ok && isLocal
+            haStatus.text = buildString {
+                append("✓ Verbunden.\n")
+                if (!primaryIsLocal) append("Unterwegs über: $primary\n")
+                if (local.isNotEmpty()) append("Zu Hause über: $local\n")
+                if (primaryIsLocal) {
+                    haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.on_surface_variant))
+                    append("Zu Hause über: $primary\n")
+                    append("⚠ Für unterwegs ist keine Internet-Adresse eingerichtet. In Home Assistant unter " +
+                        "Einstellungen → System → Netzwerk eine externe Adresse (oder Home Assistant Cloud) einrichten " +
+                        "und hier erneut verbinden.")
+                } else {
+                    append("Frag Claude im Auto z. B.: „Mach das Licht im Wohnzimmer an.“")
+                }
             }
             renderHa()
         }

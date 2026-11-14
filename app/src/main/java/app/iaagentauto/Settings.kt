@@ -45,8 +45,12 @@ object Settings {
     // ---------------------------------------------------------------- Home Assistant
     fun haUrl(c: Context): String = prefs(c).getString("ha_url", "")!!
     fun haToken(c: Context): String = prefs(c).getString("ha_token", "")!!
-    fun setHa(c: Context, url: String, token: String) =
-        prefs(c).edit().putString("ha_url", url).putString("ha_token", token.trim()).apply()
+    fun setHa(c: Context, url: String, token: String, localUrl: String = "") =
+        prefs(c).edit().putString("ha_url", url).putString("ha_token", token.trim())
+            .putString("ha_local_url", localUrl).apply()
+
+    /** Heimadresse als Ersatz, falls die Hauptadresse (z. B. Internet) nicht erreichbar ist. */
+    fun haLocalUrl(c: Context): String = prefs(c).getString("ha_local_url", "")!!
 
     /** Zusatzfunktion Home Assistant gekauft (Zwischenspeicher; Google Play ist maßgeblich). */
     fun haUnlocked(c: Context): Boolean = prefs(c).getBoolean("ha_unlocked", false)
