@@ -9,6 +9,13 @@
 > Zugang zur Claude API und einen eigenen API-Schlüssel ([console.anthropic.com](https://console.anthropic.com)).
 > Ein claude.ai-Abo (Pro/Max) allein reicht nicht aus.
 
+## Warum diese App?
+
+Ich nutze Claude, um mein Zuhause per Home Assistant zu steuern – Licht, Heizung, Rollos, einfach im Gespräch.
+**Unterwegs im Auto war das bisher nicht möglich.** IA Agent Auto schließt diese Lücke: Claude hört auch während
+der Fahrt zu, beantwortet Fragen und steuert – optional – dein Zuhause über Home Assistant.
+Zum Beispiel die Heizung vorwärmen, bevor du ankommst, oder nachsehen, ob das Garagentor zu ist.
+
 ## Funktionen
 
 - 🎙️ **Fragen per Sprache** – im Auto, am Handy oder über das Widget
@@ -60,7 +67,7 @@ Android ist eine Marke von Google LLC. Dieses Projekt ist unabhängig und steht 
 
 ## English
 
-IA Agent Auto is a voice assistant for the car. Ask questions by voice and hear the answers through
+IA Agent Auto started from a simple need: controlling a Home Assistant smart home through Claude works great at home, but not while driving. IA Agent Auto is a voice assistant for the car. Ask questions by voice and hear the answers through
 your car speakers. It works with **Claude** (requires your own Anthropic API key – a claude.ai
 Pro/Max subscription alone is not enough) and optionally controls your **Home Assistant**.
 

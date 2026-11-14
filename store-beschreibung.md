@@ -17,6 +17,9 @@ Dein KI-Sprachassistent fürs Auto mit Claude – optional mit Home Assistant.
 ⚠️ **Wichtig vor dem Kauf: IA Agent Auto funktioniert nur zusammen mit Claude.**
 Du brauchst ein Konto bei Anthropic mit Zugang zur Claude API und einen eigenen API-Schlüssel (console.anthropic.com). Ein claude.ai-Konto oder ein Claude-Abo (Pro/Max) allein reicht nicht aus. Die Nutzung der Claude API rechnet Anthropic separat nach Verbrauch ab.
 
+**Warum es diese App gibt**
+Zu Hause steuere ich mein Smart Home längst mit Claude: Licht, Heizung, Rollos – einfach im Gespräch. Nur unterwegs im Auto ging das nicht. Genau dafür habe ich IA Agent Auto entwickelt: damit Claude auch während der Fahrt zuhört, Fragen beantwortet und – wenn du möchtest – dein Zuhause über Home Assistant steuert. Heizung vorwärmen, bevor du ankommst, nachsehen, ob das Garagentor zu ist, oder das Licht einschalten: per Sprache, ohne das Handy anzufassen.
+
 **Frag einfach – während du fährst.**
 IA Agent Auto ist dein persönlicher KI-Sprachassistent für unterwegs. Du stellst deine Frage per Sprache, und die Antwort kommt direkt über die Lautsprecher deines Autos. Ohne Tippen und ohne aufs Display zu schauen.
 
