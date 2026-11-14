@@ -3,7 +3,7 @@
 **Dein KI-Sprachassistent fürs Auto mit Claude – optional mit Home Assistant.**
 *Your AI voice assistant for the car, powered by your Claude API key – with optional Home Assistant add-on.* ([English below](#english))
 
-> ⚠️ **Entwicklungsversion 0.1.2** – noch nicht im Play Store, Funktionen können sich ändern. Änderungen: [CHANGELOG.md](CHANGELOG.md)
+> ⚠️ **Entwicklungsversion 0.1.3** – noch nicht im Play Store, Funktionen können sich ändern. Änderungen: [CHANGELOG.md](CHANGELOG.md)
 
 > **Wichtig:** IA Agent Auto funktioniert nur mit Claude. Du brauchst ein Anthropic-Konto mit
 > Zugang zur Claude API und einen eigenen API-Schlüssel ([console.anthropic.com](https://console.anthropic.com)).
@@ -23,7 +23,7 @@ Zum Beispiel die Heizung vorwärmen, bevor du ankommst, oder nachsehen, ob das G
 - 🚗 **Im Auto**: erscheint in Android Auto als Medien-App (Mikrofon/Suche antippen, Frage sprechen)
 - 🏠 **Smart Home** (Zusatzfunktion): Home Assistant per Sprache steuern – mit Freigaben pro Bereich
 - 🔎 **Websuche** für aktuelle Infos (Wetter, Nachrichten, Öffnungszeiten)
-- 📷 **QR-Code-Scan** für den Home-Assistant-Zugangsschlüssel
+- 🔐 **Zwei Wege zu Home Assistant**: mit Adresse + Home-Assistant-Konto anmelden **oder** Zugangsschlüssel per QR-Code scannen
 - 🧭 **Geführte Einrichtung**, Hilfe-Bildschirm, Gesprächsverlauf auf dem Gerät
 
 ## Selbst bauen
@@ -49,6 +49,13 @@ Debug-Builds schalten die Zusatzfunktion Home Assistant automatisch frei.
 | `…/OnboardingActivity.kt`, `SettingsActivity.kt`, `HelpActivity.kt` | Einrichtung, Einstellungen, Hilfe |
 | `…/widget/` | Startbildschirm-Widget |
 
+## Anmeldung bei Home Assistant
+
+Beim Weg „Mit Adresse anmelden“ nutzt die App die normale Anmeldung von Home Assistant (OAuth2).
+Home Assistant erkennt die App über die Seite [`docs/ha-auth.html`](docs/ha-auth.html) in diesem Repository
+(Client-ID: `https://raw.githubusercontent.com/Reussi/AI-Agent-Auto/main/docs/ha-auth.html`, Rückleitung `iaagentauto://ha-auth`).
+Diese Datei darf deshalb nicht verschoben oder umbenannt werden.
+
 ## Datenschutz
 
 API-Schlüssel, Home-Assistant-Token und Gesprächsverlauf bleiben auf dem Gerät.
@@ -72,7 +79,7 @@ your car speakers. It works with **Claude** (requires your own Anthropic API key
 Pro/Max subscription alone is not enough) and optionally controls your **Home Assistant**.
 
 - Build: `./gradlew assembleDebug` (JDK 17, Android SDK 35)
-- Status: development version 0.1.2 (see [CHANGELOG.md](CHANGELOG.md))
+- Status: development version 0.1.3 (see [CHANGELOG.md](CHANGELOG.md))
 - License: **source-available, not open source** – view and private use only, see [LICENSE](LICENSE)
 - Contributions welcome via issues and pull requests, see [CONTRIBUTING.md](CONTRIBUTING.md)
 

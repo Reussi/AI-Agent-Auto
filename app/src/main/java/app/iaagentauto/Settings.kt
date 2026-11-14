@@ -47,7 +47,22 @@ object Settings {
     fun haToken(c: Context): String = prefs(c).getString("ha_token", "")!!
     fun setHa(c: Context, url: String, token: String, localUrl: String = "") =
         prefs(c).edit().putString("ha_url", url).putString("ha_token", token.trim())
-            .putString("ha_local_url", localUrl).apply()
+            .putString("ha_local_url", localUrl).putString("ha_mode", HA_MODE_TOKEN)
+            .remove("ha_refresh").remove("ha_expiry").apply()
+
+    const val HA_MODE_TOKEN = "token"
+    const val HA_MODE_LOGIN = "login"
+
+    /** Art der Verbindung: Zugangsschlüssel (QR-Code) oder Anmeldung mit Konto. */
+    fun haMode(c: Context): String = prefs(c).getString("ha_mode", HA_MODE_TOKEN)!!
+    fun setHaMode(c: Context, v: String) = prefs(c).edit().putString("ha_mode", v).apply()
+    fun haRefreshToken(c: Context): String = prefs(c).getString("ha_refresh", "")!!
+    fun haAccessExpiry(c: Context): Long = prefs(c).getLong("ha_expiry", 0L)
+    fun setHaLogin(c: Context, url: String, localUrl: String, access: String, refresh: String, expiry: Long) =
+        prefs(c).edit().putString("ha_mode", HA_MODE_LOGIN).putString("ha_url", url).putString("ha_local_url", localUrl)
+            .putString("ha_token", access).putString("ha_refresh", refresh).putLong("ha_expiry", expiry).apply()
+    fun setHaAccess(c: Context, access: String, expiry: Long) =
+        prefs(c).edit().putString("ha_token", access).putLong("ha_expiry", expiry).apply()
 
     /** Heimadresse als Ersatz, falls die Hauptadresse (z. B. Internet) nicht erreichbar ist. */
     fun haLocalUrl(c: Context): String = prefs(c).getString("ha_local_url", "")!!

@@ -21,7 +21,7 @@ Kommunikation mit dem Projektinhaber (GitHub: Reussi) auf **Deutsch**.
   angedacht (eigene Swift-App, CarPlay-Kategorie „Voice-based conversational apps“ ab iOS 26.4, Apple-Freigabe nötig).
 
 ## Produkt
-- Name: **IA Agent Auto**, Paket/applicationId `app.iaagentauto`, Version **0.1.2** (Entwicklungsversion).
+- Name: **IA Agent Auto**, Paket/applicationId `app.iaagentauto`, Version **0.1.3** (Entwicklungsversion).
   versionCode muss bei jedem Build steigen.
 - **Claude ist Voraussetzung**: eigenes Anthropic-Konto mit API-Zugang + API-Schlüssel (claude.ai-Abo reicht nicht).
   Dieser Hinweis steht im Store-Text, in der README, auf der Willkommensseite und in den Einstellungen.
@@ -29,6 +29,14 @@ Kommunikation mit dem Projektinhaber (GitHub: Reussi) auf **Deutsch**.
   `home_assistant_addon` (Billing Library 8.3). Debug-Builds sind automatisch freigeschaltet.
 - Modell standardmäßig `claude-opus-5-5`, effort `low`, serverseitige Fallbacks; Websuche-Tool; HA-Werkzeuge
   `ha_find_entities`, `ha_get_state`, `ha_call_service` mit Freigaben pro Bereich (Schlösser/Tore/Alarm aus).
+
+## Home Assistant – Verbindung
+- Zwei Wege: **„Mit Adresse anmelden“** (OAuth2 mit HA-Benutzername/Passwort, Zugriff + Erneuerungstoken)
+  **oder „Per QR-Code“** (langlebiger Zugangsschlüssel; Adresse optional, wird per mDNS im WLAN gefunden).
+- Client-ID für die Anmeldung: `https://raw.githubusercontent.com/Reussi/AI-Agent-Auto/main/docs/ha-auth.html`
+  mit `<link rel="redirect_uri" href="iaagentauto://ha-auth">` – Datei nicht verschieben/umbenennen.
+  (Noch nicht mit echtem Home Assistant getestet; Alternative: GitHub Pages.)
+- Gespeichert werden Internet-Adresse (unterwegs) und Heimadresse (Ersatz).
 
 ## Android Auto – wichtige Erkenntnis
 - Android Auto (ab 17.7, getestet mit 18.1 auf Samsung A55/Android 16) zeigt **Template-Apps (Car App Library)

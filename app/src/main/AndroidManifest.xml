@@ -68,8 +68,17 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Rückleitung nach der Anmeldung bei Home Assistant -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="iaagentauto" android:host="ha-auth" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".OnboardingActivity"

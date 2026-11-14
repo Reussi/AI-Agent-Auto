@@ -43,7 +43,8 @@ class HelpActivity : AppCompatActivity() {
         )),
         Section(R.drawable.ic_home, "Smart Home", "Zusatzfunktion mit Home Assistant", listOf(
             Step("Freischalten", "Einstellungen → Home Assistant → „Freischalten“ (einmaliger Kauf)."),
-            Step("Verbinden", "Im Heim-WLAN den Zugangsschlüssel per „QR-Code scannen“ vom PC-Bildschirm übernehmen – oder einfügen. Die Adresse findet die App automatisch."),
+            Step("Verbinden – Weg 1: mit Adresse anmelden", "„Mit Adresse anmelden“ wählen, Adresse eintragen oder „Im WLAN suchen“ tippen, dann mit deinem Home-Assistant-Benutzernamen und Passwort anmelden."),
+            Step("Verbinden – Weg 2: per QR-Code", "„Per QR-Code“ wählen und den Zugangsschlüssel aus Home Assistant vom PC-Bildschirm scannen (oder einfügen). Die Adresse findet die App im WLAN."),
             Step("Bereiche festlegen", "Unter „Was darf Claude steuern?“ auswählen, was geschaltet werden darf."),
             Step("Beispiele", "„Mach das Licht in der Küche an.“ · „Stell die Heizung auf 21 Grad.“ · „Ist ein Fenster offen?“"),
         )),

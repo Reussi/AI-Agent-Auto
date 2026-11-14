@@ -2,6 +2,11 @@
 
 Alle wichtigen Änderungen an IA Agent Auto. Die App ist noch in Entwicklung (Version 0.x).
 
+## 0.1.3
+- Home Assistant: zwei Wege zur Verbindung – **mit Adresse anmelden** (Home-Assistant-Benutzername und Passwort, kein Zugangsschlüssel nötig) **oder per QR-Code** (Zugangsschlüssel)
+- „Im WLAN suchen“ trägt die Adresse automatisch ein
+- Anmeldung wird automatisch erneuert
+
 ## 0.1.2
 - Home Assistant: Adresse ist jetzt optional – nur QR-Code scannen oder Zugangsschlüssel einfügen genügt
 - Die App findet Home Assistant automatisch im WLAN und übernimmt die Internet-Adresse aus Home Assistant für unterwegs

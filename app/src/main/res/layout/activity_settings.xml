@@ -389,6 +389,40 @@
                         android:animateLayoutChanges="true"
                         android:orientation="vertical">
 
+                        <!-- Art der Verbindung: Anmeldung (Adresse + Konto) oder Zugangsschlüssel (QR-Code) -->
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/haMode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            app:checkedButton="@+id/haModeLogin"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/haModeLogin"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Mit Adresse anmelden" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/haModeToken"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Per QR-Code" />
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                        <TextView
+                            android:id="@+id/haModeHint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textAppearance="@style/TextAppearance.ClaudeAuto.Body" />
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/haUrlLayout"
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -411,6 +445,22 @@
                                 android:inputType="textUri"
                                 android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/haDiscover"
+                            style="@style/Widget.Material3.Button.TextButton.Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Im WLAN suchen"
+                            app:icon="@drawable/ic_home" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/haLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Bei Home Assistant anmelden"
+                            app:icon="@drawable/ic_open" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/haTokenLayout"
@@ -446,6 +496,7 @@
                             app:icon="@drawable/ic_qr" />
 
                         <LinearLayout
+                            android:id="@+id/haTokenTools"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">

@@ -83,6 +83,12 @@ class SettingsActivity : AppCompatActivity() {
         setupHomeAssistant()
         setupPermissions()
         setupAbout()
+        handleAuthCallback(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleAuthCallback(intent)
     }
 
     private fun applyInsets() {
@@ -170,6 +176,9 @@ class SettingsActivity : AppCompatActivity() {
         haToken.setText(Settings.haToken(this))
 
         findViewById<MaterialButton>(R.id.haScan).setOnClickListener { scanQr() }
+        setupHaMode()
+        findViewById<MaterialButton>(R.id.haDiscover).setOnClickListener { discoverAddress() }
+        findViewById<MaterialButton>(R.id.haLogin).setOnClickListener { startLogin() }
         findViewById<MaterialButton>(R.id.haPaste).setOnClickListener {
             val text = try {
                 getSystemService(ClipboardManager::class.java).primaryClip?.getItemAt(0)?.coerceToText(this)?.toString()
@@ -205,6 +214,7 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.haConnect).setOnClickListener { connectHomeAssistant() }
         findViewById<MaterialButton>(R.id.haDisconnect).setOnClickListener {
             Settings.setHa(this, "", "")
+            Settings.setHaMode(this, Settings.HA_MODE_LOGIN)
             haToken.setText("")
             haStatus.isVisible = false
             renderHa()
@@ -283,6 +293,137 @@ class SettingsActivity : AppCompatActivity() {
         super.onResume()
         refreshPermissions()
         Billing.refresh()
+    }
+
+    // ---------------------------------------------------------------- Anmeldung mit Adresse
+
+    private fun setupHaMode() {
+        val group = findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.haMode)
+        group.check(if (Settings.haMode(this) == Settings.HA_MODE_TOKEN && Settings.haToken(this).isNotEmpty())
+            R.id.haModeToken else R.id.haModeLogin)
+        group.addOnButtonCheckedListener { _, _, isChecked -> if (isChecked) renderHaMode() }
+        renderHaMode()
+    }
+
+    private fun loginModeSelected() =
+        findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.haMode).checkedButtonId == R.id.haModeLogin
+
+    private fun renderHaMode() {
+        val login = loginModeSelected()
+        findViewById<TextView>(R.id.haModeHint).text = if (login)
+            "Adresse eintragen oder im WLAN suchen lassen, dann mit deinem Home-Assistant-Benutzernamen und Passwort anmelden. Kein Zugangsschlüssel nötig."
+        else
+            "Zugangsschlüssel aus Home Assistant per QR-Code scannen oder einfügen. Die Adresse ist optional und wird im WLAN gefunden."
+        findViewById<TextInputLayout>(R.id.haUrlLayout).apply {
+            hint = if (login) "Adresse von Home Assistant" else "Adresse (optional)"
+            helperText = if (login) "z. B. https://…ui.nabu.casa oder http://192.168.1.10:8123"
+                else "Leer lassen – wird im WLAN automatisch gefunden"
+        }
+        findViewById<View>(R.id.haDiscover).isVisible = login
+        findViewById<View>(R.id.haLogin).isVisible = login
+        listOf(R.id.haTokenLayout, R.id.haScan, R.id.haTokenTools, R.id.haConnect).forEach {
+            findViewById<View>(it).isVisible = !login
+        }
+        if (login) findViewById<View>(R.id.haHelpSteps).isVisible = false
+    }
+
+    /** Sucht Home Assistant im WLAN und trägt die Adresse ein. */
+    private fun discoverAddress() {
+        val progress = findViewById<LinearProgressIndicator>(R.id.haProgress)
+        progress.isVisible = true
+        haStatus.isVisible = true
+        haStatus.setTextColor(ContextCompat.getColor(this, R.color.on_surface_variant))
+        haStatus.text = "Suche Home Assistant in deinem WLAN …"
+        lifecycleScope.launch {
+            val found = HaDiscovery.discover(this@SettingsActivity)
+            progress.isVisible = false
+            val url = found.firstNotNullOfOrNull { it.externalUrl } ?: found.firstOrNull()?.localUrls?.firstOrNull()
+            if (url == null) {
+                haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.error))
+                haStatus.text = "Kein Home Assistant im WLAN gefunden. Bist du zu Hause im selben WLAN? Sonst die Adresse eintragen."
+            } else {
+                haUrl.setText(url)
+                haStatus.text = "Gefunden: $url – jetzt auf „Bei Home Assistant anmelden“ tippen."
+            }
+        }
+    }
+
+    /** Öffnet die Anmeldeseite von Home Assistant (Benutzername + Passwort). */
+    private fun startLogin() {
+        val url = HomeAssistant.normalizeUrl(haUrl.text?.toString().orEmpty())
+        if (url.isEmpty()) {
+            findViewById<TextInputLayout>(R.id.haUrlLayout).error = "Bitte Adresse eintragen oder „Im WLAN suchen“ tippen."
+            return
+        }
+        findViewById<TextInputLayout>(R.id.haUrlLayout).error = null
+        haUrl.setText(url)
+        val state = HaAuth.newState()
+        getSharedPreferences("ha_auth", MODE_PRIVATE).edit().putString("state", state).putString("url", url).apply()
+        val uri = HaAuth.authorizeUrl(url, state)
+        try {
+            androidx.browser.customtabs.CustomTabsIntent.Builder().setShowTitle(true).build().launchUrl(this, uri)
+        } catch (_: Exception) {
+            try { startActivity(Intent(Intent.ACTION_VIEW, uri)) } catch (_: Exception) {}
+        }
+        haStatus.isVisible = true
+        haStatus.setTextColor(ContextCompat.getColor(this, R.color.on_surface_variant))
+        haStatus.text = "Melde dich auf der geöffneten Seite mit deinem Home-Assistant-Konto an …"
+    }
+
+    /** Rückleitung von Home Assistant: Code gegen Zugang tauschen und speichern. */
+    private fun handleAuthCallback(intent: Intent?) {
+        val data = intent?.data ?: return
+        if (data.scheme != "iaagentauto" || data.host != "ha-auth") return
+        setIntent(Intent(this, SettingsActivity::class.java))
+        val prefs = getSharedPreferences("ha_auth", MODE_PRIVATE)
+        val expected = prefs.getString("state", null)
+        val url = prefs.getString("url", null)
+        val code = data.getQueryParameter("code")
+        haStatus.isVisible = true
+        if (code == null || url == null || data.getQueryParameter("state") != expected) {
+            haStatus.setTextColor(ContextCompat.getColor(this, R.color.error))
+            haStatus.text = "Anmeldung abgebrochen oder ungültig. Bitte erneut versuchen."
+            return
+        }
+        prefs.edit().clear().apply()
+        val progress = findViewById<LinearProgressIndicator>(R.id.haProgress)
+        progress.isVisible = true
+        haStatus.setTextColor(ContextCompat.getColor(this, R.color.on_surface_variant))
+        haStatus.text = "Anmeldung erfolgreich – richte Verbindung ein …"
+        lifecycleScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    val tokens = HaAuth.exchangeCode(url, code)
+                    val (external, internal) = HomeAssistant.fetchUrls(url, tokens.access)
+                    val primary = external?.takeIf { HomeAssistant.test(it, tokens.access) == null } ?: url
+                    val local = listOfNotNull(url.takeIf { it != primary }, internal).firstOrNull { it != primary }.orEmpty()
+                    Settings.setHaLogin(this@SettingsActivity, primary, local, tokens.access, tokens.refresh, tokens.expiresAt)
+                    Triple(primary, local, null as String?)
+                } catch (e: Exception) {
+                    Triple("", "", e.message ?: "Unbekannter Fehler")
+                }
+            }
+            progress.isVisible = false
+            val (primary, local, error) = result
+            if (error != null) {
+                haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.error))
+                haStatus.text = "Verbindung fehlgeschlagen: $error"
+            } else {
+                haUrl.setText(primary)
+                haStatus.setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.success))
+                haStatus.text = buildString {
+                    append("✓ Angemeldet und verbunden.\n")
+                    append("Unterwegs über: $primary\n")
+                    if (local.isNotEmpty()) append("Zu Hause über: $local\n")
+                    if (primary == url && local.isEmpty() &&
+                        Regex("^https?://(10\\.|192\\.168\\.|172\\.|[^/]*\\.local)").containsMatchIn(primary)) {
+                        append("⚠ Das ist eine Heimadresse – unterwegs funktioniert sie nicht. In Home Assistant eine " +
+                            "Internet-Adresse oder Home Assistant Cloud einrichten.")
+                    }
+                }
+            }
+            renderHa()
+        }
     }
 
     /** Scannt einen QR-Code (Zugangsschlüssel oder Adresse) mit Googles Scanner – ohne Kamera-Berechtigung. */

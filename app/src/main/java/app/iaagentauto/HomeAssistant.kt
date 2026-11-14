@@ -62,10 +62,10 @@ object HomeAssistant {
         val primary = Settings.haUrl(c)
         val local = Settings.haLocalUrl(c)
         return try {
-            request(primary, Settings.haToken(c), method, path, body)
+            request(primary, HaAuth.currentToken(c, primary), method, path, body)
         } catch (e: java.io.IOException) {
             if (local.isEmpty() || local == primary) throw e
-            request(local, Settings.haToken(c), method, path, body)
+            request(local, HaAuth.currentToken(c, local), method, path, body)
         }
     }
 
